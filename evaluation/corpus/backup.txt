@@ -1,0 +1,1 @@
+BETA backup notes: verify the backup with a checksum.

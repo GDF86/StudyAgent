@@ -1,0 +1,1 @@
+ALPHA battery notes: store the battery at room temperature.

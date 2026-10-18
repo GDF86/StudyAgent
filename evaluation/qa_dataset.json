@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "source": "Project-authored synthetic English study notes, not private documents or a real benchmark.",
+  "cases": [
+    {
+      "id": "seedling",
+      "question": "How often should ALPHA seedlings receive water?",
+      "expected_document": "seedling.txt",
+      "expected_page": null,
+      "reference_answer": "Every two days."
+    },
+    {
+      "id": "battery",
+      "question": "Where should the ALPHA battery be stored?",
+      "expected_document": "battery.txt",
+      "expected_page": null,
+      "reference_answer": "At room temperature."
+    },
+    {
+      "id": "telescope",
+      "question": "How should the ALPHA telescope lens be cleaned?",
+      "expected_document": "telescope.txt",
+      "expected_page": null,
+      "reference_answer": "With a soft cloth."
+    },
+    {
+      "id": "archive",
+      "question": "How long should the BETA archive be retained?",
+      "expected_document": "archive.txt",
+      "expected_page": null,
+      "reference_answer": "Thirty days."
+    },
+    {
+      "id": "sensor",
+      "question": "When should the BETA sensor be calibrated?",
+      "expected_document": "sensor.txt",
+      "expected_page": null,
+      "reference_answer": "Before each experiment."
+    },
+    {
+      "id": "backup",
+      "question": "How should the BETA backup be verified?",
+      "expected_document": "backup.txt",
+      "expected_page": null,
+      "reference_answer": "With a checksum."
+    }
+  ]
+}

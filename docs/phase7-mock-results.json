@@ -1,0 +1,515 @@
+{
+  "run_id": "09c50a4028994eed8ad0143973de0286",
+  "created_at": "2026-10-17T08:08:59.117794+00:00",
+  "environment": "mock",
+  "provider_note": "Local deterministic TEST-ONLY-RAG / TEST-ONLY-AGENT / TEST-ONLY-LEXICAL; synthetic protocol validation only",
+  "dataset_sha256": "59776584b5198df06101970ff1b52184d4f21efd891180b4feb241e44586d875",
+  "dataset_source": "Project-authored synthetic English study notes, not private documents or a real benchmark.",
+  "top_k": 1,
+  "include_answers": true,
+  "latency_scope": "server retrieval including rerank; includes answer generation only when requested; sequential basic then reranked, not a benchmark",
+  "summary": {
+    "basic": {
+      "cases": 6,
+      "errors": 0,
+      "retrieval_hit_rate": 0.3333333333333333,
+      "mean_response_ms": 215.49411666637752,
+      "answer_accuracy": null
+    },
+    "reranked": {
+      "cases": 6,
+      "errors": 0,
+      "retrieval_hit_rate": 1.0,
+      "mean_response_ms": 385.8693166645632,
+      "answer_accuracy": null
+    }
+  },
+  "rows": [
+    {
+      "id": "seedling",
+      "question": "How often should ALPHA seedlings receive water?",
+      "expected_document": "seedling.txt",
+      "expected_page": null,
+      "reference_answer": "Every two days.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+              "document_name": "telescope.txt",
+              "page": null,
+              "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+              "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 212.60470000561327,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA telescope notes: clean the lens with a soft cloth. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+                "document_name": "telescope.txt",
+                "page": null,
+                "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+                "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": false
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "bc82dd28-3237-4b5c-9687-8046aee868d3",
+              "document_name": "seedling.txt",
+              "page": null,
+              "chunk_id": "4309a42b-c389-494b-abea-b638c80e6ac3",
+              "content": "ALPHA seedling notes: water the seedlings every two days.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 338.34079999360256,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA seedling notes: water the seedlings every two days. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "bc82dd28-3237-4b5c-9687-8046aee868d3",
+                "document_name": "seedling.txt",
+                "page": null,
+                "chunk_id": "4309a42b-c389-494b-abea-b638c80e6ac3",
+                "content": "ALPHA seedling notes: water the seedlings every two days.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    },
+    {
+      "id": "battery",
+      "question": "Where should the ALPHA battery be stored?",
+      "expected_document": "battery.txt",
+      "expected_page": null,
+      "reference_answer": "At room temperature.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+              "document_name": "telescope.txt",
+              "page": null,
+              "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+              "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 187.03549998463131,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA telescope notes: clean the lens with a soft cloth. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+                "document_name": "telescope.txt",
+                "page": null,
+                "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+                "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": false
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "6fc33a5f-b4b6-49ff-a032-244b562ddd5e",
+              "document_name": "battery.txt",
+              "page": null,
+              "chunk_id": "366c2077-72b9-474d-9458-99511ed8e6f6",
+              "content": "ALPHA battery notes: store the battery at room temperature.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 355.7792000065092,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA battery notes: store the battery at room temperature. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "6fc33a5f-b4b6-49ff-a032-244b562ddd5e",
+                "document_name": "battery.txt",
+                "page": null,
+                "chunk_id": "366c2077-72b9-474d-9458-99511ed8e6f6",
+                "content": "ALPHA battery notes: store the battery at room temperature.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    },
+    {
+      "id": "telescope",
+      "question": "How should the ALPHA telescope lens be cleaned?",
+      "expected_document": "telescope.txt",
+      "expected_page": null,
+      "reference_answer": "With a soft cloth.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+              "document_name": "telescope.txt",
+              "page": null,
+              "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+              "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 179.77700001210906,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA telescope notes: clean the lens with a soft cloth. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+                "document_name": "telescope.txt",
+                "page": null,
+                "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+                "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+              "document_name": "telescope.txt",
+              "page": null,
+              "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+              "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 364.46289997547865,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nALPHA telescope notes: clean the lens with a soft cloth. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "3b17c7ac-cf6d-4218-bdbb-5f23b11e1c4f",
+                "document_name": "telescope.txt",
+                "page": null,
+                "chunk_id": "ce735772-7cff-4bf1-b388-7e3da10318d4",
+                "content": "ALPHA telescope notes: clean the lens with a soft cloth.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    },
+    {
+      "id": "archive",
+      "question": "How long should the BETA archive be retained?",
+      "expected_document": "archive.txt",
+      "expected_page": null,
+      "reference_answer": "Thirty days.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+              "document_name": "sensor.txt",
+              "page": null,
+              "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+              "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 186.7076999915298,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA sensor notes: calibrate the sensor before each experiment. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+                "document_name": "sensor.txt",
+                "page": null,
+                "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+                "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": false
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "9950e47d-67a0-41cc-86b7-e19384ececbc",
+              "document_name": "archive.txt",
+              "page": null,
+              "chunk_id": "5e627077-519c-4c7f-a270-c066528968d2",
+              "content": "BETA archive notes: retain the archive for thirty days.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 435.5879999930039,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA archive notes: retain the archive for thirty days. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "9950e47d-67a0-41cc-86b7-e19384ececbc",
+                "document_name": "archive.txt",
+                "page": null,
+                "chunk_id": "5e627077-519c-4c7f-a270-c066528968d2",
+                "content": "BETA archive notes: retain the archive for thirty days.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    },
+    {
+      "id": "sensor",
+      "question": "When should the BETA sensor be calibrated?",
+      "expected_document": "sensor.txt",
+      "expected_page": null,
+      "reference_answer": "Before each experiment.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+              "document_name": "sensor.txt",
+              "page": null,
+              "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+              "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 197.59729999350384,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA sensor notes: calibrate the sensor before each experiment. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+                "document_name": "sensor.txt",
+                "page": null,
+                "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+                "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+              "document_name": "sensor.txt",
+              "page": null,
+              "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+              "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 392.88220001617447,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA sensor notes: calibrate the sensor before each experiment. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+                "document_name": "sensor.txt",
+                "page": null,
+                "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+                "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    },
+    {
+      "id": "backup",
+      "question": "How should the BETA backup be verified?",
+      "expected_document": "backup.txt",
+      "expected_page": null,
+      "reference_answer": "With a checksum.",
+      "runs": {
+        "basic": {
+          "mode": "basic",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+              "document_name": "sensor.txt",
+              "page": null,
+              "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+              "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 329.24250001087785,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA sensor notes: calibrate the sensor before each experiment. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "64586d5e-f9f0-4668-ab51-373e506ed1bc",
+                "document_name": "sensor.txt",
+                "page": null,
+                "chunk_id": "91f7f9e2-e13a-473e-bb6c-6ff078496114",
+                "content": "BETA sensor notes: calibrate the sensor before each experiment.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": false
+        },
+        "reranked": {
+          "mode": "reranked",
+          "citations": [
+            {
+              "id": 1,
+              "knowledge_base_id": 3,
+              "document_id": "679c039a-48f3-4a75-9add-c4fe0303e802",
+              "document_name": "backup.txt",
+              "page": null,
+              "chunk_id": "52350f56-7d62-47db-83cc-9a5569f7bfb0",
+              "content": "BETA backup notes: verify the backup with a checksum.",
+              "score": 1.0
+            }
+          ],
+          "elapsed_ms": 428.1628000026103,
+          "answer": {
+            "knowledge_base_id": 3,
+            "answer": "## 根据当前资料\n\nBETA backup notes: verify the backup with a checksum. [1]\n\n```python\nprint('资料示例')\n```",
+            "citations": [
+              {
+                "id": 1,
+                "knowledge_base_id": 3,
+                "document_id": "679c039a-48f3-4a75-9add-c4fe0303e802",
+                "document_name": "backup.txt",
+                "page": null,
+                "chunk_id": "52350f56-7d62-47db-83cc-9a5569f7bfb0",
+                "content": "BETA backup notes: verify the backup with a checksum.",
+                "score": 1.0
+              }
+            ],
+            "status": "answered"
+          },
+          "error_code": null,
+          "error_message": null,
+          "hit": true
+        }
+      }
+    }
+  ]
+}
