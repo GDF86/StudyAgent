@@ -1,0 +1,287 @@
+# Third-party dependency notices
+
+The current StudyAgent project is offered under GNU AGPL version 3 only (SPDX: AGPL-3.0-only); see LICENSE and COPYRIGHT. Third-party dependencies retain their original licenses; they are not relicensed by this repository. No installed dependency source, wheel, node_modules or virtual environment is part of this source candidate. Installation retrieves the packages and their notices.
+
+This inventory is derived from the clean installation metadata and package-lock.json on 2026-11-13. It is an attribution inventory, not a legal compatibility certification. Before distribution, review the actual LICENSE/NOTICE files and the intended distribution form.
+
+**PyMuPDF** metadata states: **Dual Licensed - GNU AFFERO GPL 3.0 or Artifex Commercial License**. This candidate retains PyMuPDF and chooses the AGPL open-source publication direction, not a claimed commercial license. The dependency keeps its own license and copyright. Selecting AGPL for StudyAgent does not by itself certify compliance with all source, notice or network-use obligations.
+
+The inventory includes permissive MIT/BSD/ISC/Apache/PSF packages, MPL-2.0 components and CC-BY-4.0 data. Their notices, attribution requirements and applicable file-level conditions remain in force; no third-party item is relabeled as project-owned AGPL. DOMPurify offers MPL-2.0 OR Apache-2.0; the Apache option is available for this integration. This is a source-only candidate, not a bundled dependency distribution.
+
+Official references: [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html), [Artifex licensing](https://artifex.com/licensing), [GNU license compatibility](https://www.gnu.org/licenses/license-compatibility.en.html). The root LICENSE is the complete AGPLv3 text retrieved from the [official SPDX license data](https://raw.githubusercontent.com/spdx/license-list-data/main/text/AGPL-3.0-only.txt).
+
+System Python, Node.js and the locally installed Edge browser are prerequisites, not bundled components. Public demonstration text and screenshots are project-authored; dependency logos/fonts/vendor code were not added.
+
+## Python locked dependencies
+
+| Package | Version | Installed license metadata |
+| --- | --- | --- |
+| annotated-doc | 0.0.5 | MIT |
+| annotated-types | 0.8.0 | MIT |
+| anyio | 4.15.1 | MIT |
+| certifi | 2026.7.22 | MPL-2.0 |
+| click | 8.5.0 | BSD-3-Clause |
+| colorama | 0.4.6 | License :: OSI Approved :: BSD License |
+| faiss-cpu | 1.15.1 | MIT |
+| fastapi | 0.143.0 | MIT |
+| h11 | 0.16.0 | MIT |
+| httpcore | 1.0.9 | BSD-3-Clause |
+| httpx | 0.28.1 | BSD-3-Clause |
+| idna | 3.20 | BSD-3-Clause |
+| iniconfig | 2.3.1 | MIT |
+| lxml | 6.1.3 | BSD-3-Clause |
+| numpy | 2.5.4 | BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0 |
+| opentelemetry-api | 1.45.1 | Apache-2.0 |
+| packaging | 26.3 | Apache-2.0 OR BSD-2-Clause |
+| pluggy | 1.6.0 | MIT |
+| pydantic | 2.14.1 | MIT |
+| pydantic-settings | 2.15.0 | MIT |
+| pydantic_core | 2.50.1 | MIT |
+| Pygments | 2.21.0 | BSD-2-Clause |
+| pymupdf | 1.28.2 | Dual Licensed - GNU AFFERO GPL 3.0 or Artifex Commercial License |
+| pytest | 9.1.1 | MIT |
+| python-docx | 1.2.0 | MIT |
+| python-dotenv | 1.2.4 | BSD-3-Clause |
+| python-multipart | 0.0.32 | Apache-2.0 |
+| SQLAlchemy | 2.1.4 | MIT |
+| starlette | 1.7.0 | BSD-3-Clause |
+| typing-inspection | 0.4.4 | MIT |
+| typing_extensions | 4.16.0 | PSF-2.0 |
+| uvicorn | 0.54.0 | BSD-3-Clause |
+
+## Frontend lockfile dependencies
+
+Includes optional platform packages recorded in the lockfile, even if not installed on this machine.
+
+| Package | Version | License |
+| --- | --- | --- |
+| @alloc/quick-lru | 5.3.0 | MIT |
+| @babel/helper-string-parser | 7.29.7 | MIT |
+| @babel/helper-validator-identifier | 7.29.7 | MIT |
+| @babel/parser | 7.29.9 | MIT |
+| @babel/types | 7.29.8 | MIT |
+| @esbuild/aix-ppc64 | 0.25.12 | MIT |
+| @esbuild/android-arm | 0.25.12 | MIT |
+| @esbuild/android-arm64 | 0.25.12 | MIT |
+| @esbuild/android-x64 | 0.25.12 | MIT |
+| @esbuild/darwin-arm64 | 0.25.12 | MIT |
+| @esbuild/darwin-x64 | 0.25.12 | MIT |
+| @esbuild/freebsd-arm64 | 0.25.12 | MIT |
+| @esbuild/freebsd-x64 | 0.25.12 | MIT |
+| @esbuild/linux-arm | 0.25.12 | MIT |
+| @esbuild/linux-arm64 | 0.25.12 | MIT |
+| @esbuild/linux-ia32 | 0.25.12 | MIT |
+| @esbuild/linux-loong64 | 0.25.12 | MIT |
+| @esbuild/linux-mips64el | 0.25.12 | MIT |
+| @esbuild/linux-ppc64 | 0.25.12 | MIT |
+| @esbuild/linux-riscv64 | 0.25.12 | MIT |
+| @esbuild/linux-s390x | 0.25.12 | MIT |
+| @esbuild/linux-x64 | 0.25.12 | MIT |
+| @esbuild/netbsd-arm64 | 0.25.12 | MIT |
+| @esbuild/netbsd-x64 | 0.25.12 | MIT |
+| @esbuild/openbsd-arm64 | 0.25.12 | MIT |
+| @esbuild/openbsd-x64 | 0.25.12 | MIT |
+| @esbuild/openharmony-arm64 | 0.25.12 | MIT |
+| @esbuild/sunos-x64 | 0.25.12 | MIT |
+| @esbuild/win32-arm64 | 0.25.12 | MIT |
+| @esbuild/win32-ia32 | 0.25.12 | MIT |
+| @esbuild/win32-x64 | 0.25.12 | MIT |
+| @jridgewell/gen-mapping | 0.3.13 | MIT |
+| @jridgewell/resolve-uri | 3.1.2 | MIT |
+| @jridgewell/sourcemap-codec | 1.6.0 | MIT |
+| @jridgewell/trace-mapping | 0.3.31 | MIT |
+| @napi-rs/lzma-linux-x64-gnu | 1.5.1 | MIT |
+| @nodelib/fs.scandir | 2.1.5 | MIT |
+| @nodelib/fs.stat | 2.0.5 | MIT |
+| @nodelib/fs.walk | 1.2.8 | MIT |
+| @playwright/test | 1.64.0 | Apache-2.0 |
+| @rollup/rollup-android-arm-eabi | 4.64.5 | MIT |
+| @rollup/rollup-android-arm64 | 4.64.5 | MIT |
+| @rollup/rollup-darwin-arm64 | 4.64.5 | MIT |
+| @rollup/rollup-darwin-x64 | 4.64.5 | MIT |
+| @rollup/rollup-freebsd-arm64 | 4.64.5 | MIT |
+| @rollup/rollup-freebsd-x64 | 4.64.5 | MIT |
+| @rollup/rollup-linux-arm-gnueabihf | 4.64.5 | MIT |
+| @rollup/rollup-linux-arm-musleabihf | 4.64.5 | MIT |
+| @rollup/rollup-linux-arm64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-arm64-musl | 4.64.5 | MIT |
+| @rollup/rollup-linux-loong64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-loong64-musl | 4.64.5 | MIT |
+| @rollup/rollup-linux-ppc64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-ppc64-musl | 4.64.5 | MIT |
+| @rollup/rollup-linux-riscv64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-riscv64-musl | 4.64.5 | MIT |
+| @rollup/rollup-linux-s390x-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-x64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-linux-x64-musl | 4.64.5 | MIT |
+| @rollup/rollup-openbsd-x64 | 4.64.5 | MIT |
+| @rollup/rollup-openharmony-arm64 | 4.64.5 | MIT |
+| @rollup/rollup-win32-arm64-msvc | 4.64.5 | MIT |
+| @rollup/rollup-win32-ia32-msvc | 4.64.5 | MIT |
+| @rollup/rollup-win32-x64-gnu | 4.64.5 | MIT |
+| @rollup/rollup-win32-x64-msvc | 4.64.5 | MIT |
+| @types/estree | 1.0.9 | MIT |
+| @types/linkify-it | 5.0.0 | MIT |
+| @types/markdown-it | 14.2.0 | MIT |
+| @types/mdurl | 2.0.0 | MIT |
+| @types/node | 22.20.5 | MIT |
+| @types/trusted-types | 2.0.7 | MIT |
+| @vitejs/plugin-vue | 5.2.4 | MIT |
+| @volar/language-core | 2.4.15 | MIT |
+| @volar/source-map | 2.4.15 | MIT |
+| @volar/typescript | 2.4.15 | MIT |
+| @vue/compiler-core | 3.5.43 | MIT |
+| @vue/compiler-dom | 3.5.43 | MIT |
+| @vue/compiler-sfc | 3.5.43 | MIT |
+| @vue/compiler-ssr | 3.5.43 | MIT |
+| @vue/compiler-vue2 | 2.7.16 | MIT |
+| @vue/devtools-api | 6.6.4 | MIT |
+| @vue/devtools-api | 7.7.10 | MIT |
+| @vue/devtools-kit | 7.7.10 | MIT |
+| @vue/devtools-shared | 7.7.10 | MIT |
+| @vue/language-core | 2.2.12 | MIT |
+| @vue/reactivity | 3.5.43 | MIT |
+| @vue/runtime-core | 3.5.43 | MIT |
+| @vue/runtime-dom | 3.5.43 | MIT |
+| @vue/server-renderer | 3.5.43 | MIT |
+| @vue/shared | 3.5.43 | MIT |
+| agent-base | 6.0.2 | MIT |
+| alien-signals | 1.0.13 | MIT |
+| any-promise | 1.3.0 | MIT |
+| anymatch | 3.1.3 | ISC |
+| arg | 5.0.2 | MIT |
+| argparse | 3.0.2 | PSF-2.0 |
+| asynckit | 0.4.0 | MIT |
+| autoprefixer | 10.6.2 | MIT |
+| axios | 1.20.0 | MIT |
+| balanced-match | 1.0.2 | MIT |
+| baseline-browser-mapping | 2.11.35 | Apache-2.0 |
+| binary-extensions | 2.3.0 | MIT |
+| birpc | 2.9.0 | MIT |
+| brace-expansion | 2.1.7 | MIT |
+| braces | 3.0.3 | MIT |
+| browserslist | 4.29.5 | MIT |
+| call-bind-apply-helpers | 1.0.2 | MIT |
+| camelcase-css | 2.0.1 | MIT |
+| caniuse-lite | 1.0.30001823 | CC-BY-4.0 |
+| chokidar | 3.6.0 | MIT |
+| combined-stream | 1.0.8 | MIT |
+| commander | 4.1.1 | MIT |
+| copy-anything | 4.1.5 | MIT |
+| cssesc | 3.0.0 | MIT |
+| csstype | 3.2.3 | MIT |
+| de-indent | 1.0.2 | MIT |
+| debug | 4.4.3 | MIT |
+| delayed-stream | 1.0.0 | MIT |
+| didyoumean | 1.2.2 | Apache-2.0 |
+| dlv | 1.1.3 | MIT |
+| dompurify | 3.4.16 | (MPL-2.0 OR Apache-2.0) |
+| dunder-proto | 1.0.1 | MIT |
+| electron-to-chromium | 1.5.478 | ISC |
+| entities | 7.0.1 | BSD-2-Clause |
+| entities | 8.1.0 | BSD-2-Clause |
+| es-define-property | 1.0.1 | MIT |
+| es-errors | 1.3.0 | MIT |
+| es-object-atoms | 1.1.2 | MIT |
+| es-set-tostringtag | 2.1.0 | MIT |
+| esbuild | 0.25.12 | MIT |
+| escalade | 3.2.0 | MIT |
+| estree-walker | 2.0.2 | MIT |
+| fast-glob | 3.3.3 | MIT |
+| fastq | 1.20.3 | ISC |
+| fdir | 6.5.0 | MIT |
+| fill-range | 7.1.1 | MIT |
+| follow-redirects | 1.16.1 | MIT |
+| form-data | 4.0.6 | MIT |
+| fraction.js | 5.3.4 | MIT |
+| fsevents | 2.3.3 | MIT |
+| function-bind | 1.1.2 | MIT |
+| get-intrinsic | 1.3.0 | MIT |
+| get-proto | 1.0.1 | MIT |
+| glob-parent | 5.1.2 | ISC |
+| glob-parent | 5.1.2 | ISC |
+| glob-parent | 6.0.2 | ISC |
+| gopd | 1.2.0 | MIT |
+| has-symbols | 1.1.0 | MIT |
+| has-tostringtag | 1.0.2 | MIT |
+| hasown | 2.0.4 | MIT |
+| he | 1.2.0 | MIT |
+| hookable | 5.5.3 | MIT |
+| https-proxy-agent | 5.0.1 | MIT |
+| is-binary-path | 2.1.0 | MIT |
+| is-core-module | 2.18.0 | MIT |
+| is-extglob | 2.1.1 | MIT |
+| is-glob | 4.0.3 | MIT |
+| is-number | 7.0.0 | MIT |
+| jiti | 1.21.7 | MIT |
+| lilconfig | 3.1.4 | MIT |
+| lines-and-columns | 1.2.4 | MIT |
+| linkify-it | 6.1.0 | MIT |
+| magic-string | 0.30.21 | MIT |
+| markdown-it | 15.0.2 | MIT |
+| math-intrinsics | 1.1.0 | MIT |
+| mdurl | 2.1.0 | MIT |
+| merge2 | 1.4.1 | MIT |
+| micromatch | 4.0.8 | MIT |
+| mime-db | 1.52.0 | MIT |
+| mime-types | 2.1.35 | MIT |
+| minimatch | 9.0.9 | ISC |
+| mitt | 3.0.1 | MIT |
+| ms | 2.1.3 | MIT |
+| muggle-string | 0.4.1 | MIT |
+| mz | 2.7.0 | MIT |
+| nanoid | 3.3.20 | MIT |
+| node-releases | 2.0.63 | MIT |
+| normalize-path | 3.0.0 | MIT |
+| object-assign | 4.1.1 | MIT |
+| object-hash | 3.0.0 | MIT |
+| path-browserify | 1.0.1 | MIT |
+| path-parse | 1.0.7 | MIT |
+| perfect-debounce | 1.0.0 | MIT |
+| picocolors | 1.1.1 | ISC |
+| picomatch | 2.3.2 | MIT |
+| picomatch | 2.3.2 | MIT |
+| picomatch | 2.3.2 | MIT |
+| picomatch | 4.0.7 | MIT |
+| pinia | 3.0.4 | MIT |
+| pirates | 4.0.7 | MIT |
+| playwright | 1.64.0 | Apache-2.0 |
+| playwright-core | 1.64.0 | Apache-2.0 |
+| postcss | 8.5.32 | MIT |
+| postcss-import | 15.1.0 | MIT |
+| postcss-js | 4.1.0 | MIT |
+| postcss-load-config | 6.0.1 | MIT |
+| postcss-nested | 6.2.0 | MIT |
+| postcss-selector-parser | 6.1.5 | MIT |
+| postcss-value-parser | 4.2.0 | MIT |
+| proxy-from-env | 2.1.0 | MIT |
+| punycode.js | 2.3.1 | MIT |
+| queue-microtask | 1.2.3 | MIT |
+| read-cache | 1.0.2 | MIT |
+| readdirp | 3.6.0 | MIT |
+| resolve | 1.22.14 | MIT |
+| reusify | 1.1.0 | MIT |
+| rfdc | 1.4.1 | MIT |
+| rollup | 4.64.5 | MIT |
+| run-parallel | 1.2.0 | MIT |
+| source-map-js | 1.2.2 | BSD-3-Clause |
+| speakingurl | 14.0.1 | BSD-3-Clause |
+| sucrase | 3.35.1 | MIT |
+| superjson | 2.2.6 | MIT |
+| supports-preserve-symlinks-flag | 1.0.0 | MIT |
+| tailwindcss | 3.4.19 | MIT |
+| thenify | 3.3.1 | MIT |
+| thenify-all | 1.6.0 | MIT |
+| tinyglobby | 0.2.17 | MIT |
+| to-regex-range | 5.0.1 | MIT |
+| ts-interface-checker | 0.1.13 | Apache-2.0 |
+| typescript | 5.7.3 | Apache-2.0 |
+| uc.micro | 3.0.0 | MIT |
+| undici-types | 6.21.0 | MIT |
+| update-browserslist-db | 1.3.4 | MIT |
+| util-deprecate | 1.0.2 | MIT |
+| vite | 6.4.4 | MIT |
+| vscode-uri | 3.2.0 | MIT |
+| vue | 3.5.43 | MIT |
+| vue-router | 4.6.4 | MIT |
+| vue-tsc | 2.2.12 | MIT |

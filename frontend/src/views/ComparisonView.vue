@@ -26,7 +26,7 @@ onBeforeUnmount(() => controller?.abort())
 </script>
 <template>
   <header class="page-header"><span class="eyebrow">RETRIEVAL COMPARISON</span><h1>检索对比</h1><p>查看同一问题在基础检索与重排后的来源顺序。</p></header>
-  <p class="panel comparison-note">本页不生成答案、不保存会话。两种方式分别执行；耗时是本次测量，不代表模型性能。Mock 服务只能验证流程，不能证明效果提升。</p>
+  <p class="panel comparison-note">本页不生成答案、不保存会话；查询向量化会调用模型。未启用真实Reranker时仅展示Basic实际检索，重排栏明确显示未启用，不发起隐藏调用。耗时不代表模型性能，Mock结果不证明效果提升。</p>
   <form class="panel history-panel" @submit.prevent="compare">
     <div class="history-controls"><label>知识库<select aria-label="知识库" v-model="kb" required @change="clear"><option v-for="item in bases" :key="item.id" :value="String(item.id)">{{ item.name }}</option></select></label>
     <label>返回条数<input v-model.number="topK" type="number" min="1" max="20" required @change="clear" /></label></div>
@@ -37,10 +37,10 @@ onBeforeUnmount(() => controller?.abort())
   </form>
   <p v-if="error" role="alert" class="error">{{ error }}</p>
   <div class="comparison-grid" aria-live="polite" :aria-busy="busy">
-    <section v-for="run in runs" :key="run.mode" class="panel comparison-result" :data-mode="run.mode">
-      <h2>{{ run.mode === 'basic' ? 'Basic RAG' : 'RAG + Reranker' }}</h2>
-      <p>{{ run.elapsed_ms.toFixed(1) }} ms · {{ run.citations.length }} 条来源<span v-if="run.mode === 'reranked'"> · 候选上限 {{ candidateK }}</span></p>
-      <p v-if="run.error_code" role="alert" class="error">{{ run.error_message }}（{{ run.error_code }}）</p>
+    <section v-for="run in runs" :key="run.mode" class="panel comparison-result" :class="{unavailable:run.error_code && run.mode==='reranked'}" :data-mode="run.mode">
+      <h2 v-if="!run.error_code || run.mode!=='reranked'">{{ run.mode === 'basic' ? 'Basic RAG' : 'RAG + Reranker' }}</h2>
+      <p v-if="!run.error_code">{{ run.elapsed_ms.toFixed(1) }} ms · {{ run.citations.length }} 条来源<span v-if="run.mode === 'reranked'"> · 候选上限 {{ candidateK }}</span></p>
+      <p v-if="run.error_code" role="alert" class="muted"><strong v-if="run.mode==='reranked'">重排模型尚未启用：</strong>{{ run.error_message }}（{{ run.error_code }}）</p>
       <p v-else-if="!run.citations.length">没有符合阈值的已就绪资料。</p>
       <ol><li v-for="source in run.citations" :key="source.chunk_id"><strong>{{ source.document_name }}</strong><span v-if="source.page"> · 第 {{ source.page }} 页</span>
         <p>向量相似度 {{ source.score.toFixed(4) }}（不是重排分数）</p><details><summary>查看来源原文</summary><p class="source-content">{{ source.content }}</p></details></li></ol>
@@ -48,7 +48,9 @@ onBeforeUnmount(() => controller?.abort())
   </div>
 </template>
 <style scoped>
-.comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
+.comparison-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 24px; }
+.comparison-result.unavailable { padding: 12px 20px; order: -1; }
+.comparison-result.unavailable p { margin: 0; }
 .comparison-note { padding: 16px 20px; color: #58685f; font-size: 14px; }
 .comparison-result { padding: 24px; min-width: 0; overflow-wrap: anywhere; }
 .comparison-result li { margin-bottom: 20px; }

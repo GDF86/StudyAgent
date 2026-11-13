@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import Settings
 from app.core.errors import DomainError
+from app.core.live_test import forbid_extra
 from app.llm.provider import LLMProvider
 from app.rag.prompts import build_messages, validate_citation_markers
 from app.rag.retriever import Retriever
@@ -25,8 +26,9 @@ class PreparedChat:
 class ChatService:
     """One independent RAG question; no history, memory, tools, or agents."""
 
-    def __init__(self, settings: Settings, retriever: Retriever, provider: LLMProvider):
+    def __init__(self, settings: Settings, retriever: Retriever, provider: LLMProvider,preferences=None):
         self.settings, self.retriever, self.provider = settings, retriever, provider
+        self.preferences=preferences
 
     def prepare(self, session: Session, body: ChatRequest) -> PreparedChat:
         result = self.retriever.retrieve(session, body.knowledge_base_id, body.question, body.top_k or self.settings.top_k)
@@ -37,6 +39,9 @@ class ChatService:
             prepared.immediate = ChatResponse(knowledge_base_id=body.knowledge_base_id, answer=answer, citations=[], status=status)
         else:
             prepared.messages = build_messages(body.question, result.citations)
+            if self.preferences:
+                from app.services.preferences import inject_preferences
+                inject_preferences(prepared.messages,self.preferences.get().preferences)
         return prepared
 
     def finish(self, prepared: PreparedChat, answer: str) -> ChatResponse:
@@ -67,8 +72,10 @@ class ChatService:
                 final = self.finish(prepared, "".join(parts))
             yield {"type": "done", **final.model_dump()}
         except DomainError as error:
+            if error.code!='LLM_OUTPUT_LIMIT':forbid_extra("CHAT_FAILED")
             log.warning("chat_failed code=%s", error.code)
             yield {"type": "error", "code": error.code, "message": error.message}
         except Exception:
+            forbid_extra("CHAT_FAILED")
             log.warning("chat_failed code=INTERNAL_ERROR")
             yield {"type": "error", "code": "INTERNAL_ERROR", "message": "问答暂时不可用，请重试"}

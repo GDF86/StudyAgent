@@ -20,7 +20,7 @@ ASGI 中间件在 multipart 解析前限制请求体，额度为文件上限加 
 
 EmbeddingProvider 协议定义 embed_texts。正式 CompatibleEmbeddingProvider 调用配置地址的 /embeddings，发送 model、input、encoding_format=float。分批请求，按 index 还原顺序，验证数量、维度、有限非零数值。超时、限流、错误响应均转换为可读错误，不泄漏上游内容或密钥。
 
-localhost 和回环 IP 直连，远程地址遵循系统代理。配置缺失返回 503；绝不自动模拟向量。测试服务仅位于 tests 中。
+模型 HTTP 使用 trust_env=False，不继承系统代理。LLM/Embedding 仅在明确配置 MODEL_HTTP_PROXY 时使用显式代理；默认直连。真实请求必须经过 Guard 和独立授权，普通 Uvicorn 不自动授予模型调用权限。配置缺失返回 503；绝不自动模拟向量。测试服务仅位于 tests 中。
 
 processing → embedding → ready；任何阶段出错则 failed。只有 FAISS 与分片都保存成功才 ready。失败保留原文件和状态，但清除不完整索引/分片。启动时将上次中断的 processing/embedding 标记失败。
 

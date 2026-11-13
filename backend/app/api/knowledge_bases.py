@@ -7,10 +7,15 @@ from sqlalchemy.orm import Session
 
 from app.database.models import KnowledgeBase, Document
 from app.database.session import get_session
+from app.core.errors import DomainError
 from app.schemas.knowledge_base import KnowledgeBaseRead, KnowledgeBaseWrite
 
 router = APIRouter(prefix="/api/knowledge-bases", tags=["Knowledge bases"])
 Database = Annotated[Session, Depends(get_session)]
+
+def protect_reference(item,request):
+    if request.app.state.settings.web_demo_enabled and item.name=='Bailian-RAG-Live-Test':
+        raise DomainError(403,'REFERENCE_KB_PROTECTED','历史验证知识库只读，请创建自己的学习知识库')
 
 
 def require_knowledge_base(session: Session, kb_id: int) -> KnowledgeBase:
@@ -50,8 +55,9 @@ def get_knowledge_base(kb_id: int, session: Database):
 
 
 @router.put("/{kb_id}", response_model=KnowledgeBaseRead)
-def update_knowledge_base(kb_id: int, body: KnowledgeBaseWrite, session: Database):
+def update_knowledge_base(kb_id: int, body: KnowledgeBaseWrite, session: Database,request:Request):
     item = require_knowledge_base(session, kb_id)
+    protect_reference(item,request)
     item.name, item.description = body.name, body.description
     return save(session, item)
 
@@ -61,6 +67,7 @@ def delete_knowledge_base(kb_id: int, session: Database, request: Request):
     service = request.app.state.documents
     with service.lock:
         item = require_knowledge_base(session, kb_id)
+        protect_reference(item,request)
         request.app.state.conversations.require_knowledge_base_idle(session, kb_id)
         for doc in session.scalars(select(Document).where(Document.knowledge_base_id == kb_id)).all():
             service.delete_document(session, doc)

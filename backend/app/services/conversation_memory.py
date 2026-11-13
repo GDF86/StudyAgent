@@ -3,6 +3,7 @@ import json
 import re
 from sqlalchemy import select
 from app.core.errors import DomainError
+from app.core.live_test import forbid_extra,CURRENT
 from app.database.models import Conversation, Message, utc_now
 
 
@@ -39,6 +40,8 @@ class ConversationMemoryService:
             return (list(latest.values()), conversation.summary, conversation.summary_through_turn, conversation.revision)
 
     async def context(self, conversation_id, before_turn, provider):
+        scope=CURRENT.get()
+        if scope and not getattr(scope,'history_enabled',False):forbid_extra("HISTORY_FORBIDDEN")
         turns, summary, watermark, revision = self.snapshot(conversation_id, before_turn)
         preferences = self.preferences.get().preferences.model_dump()
         if watermark >= before_turn:
@@ -71,6 +74,10 @@ class ConversationMemoryService:
                 {"role": "user", "content": json.dumps({"purpose": "conversation_summary", "previous_summary": summary, "turns": batch}, ensure_ascii=False)}]
             check_prompt(self.settings, messages)
             try:
+                if scope:
+                    count=getattr(scope,'summary_calls',0)
+                    if count>=2:raise DomainError(413,'MEMORY_SUMMARY_LIMIT','本次最多生成两批历史摘要，原始记录已保留；请缩小会话范围')
+                    scope.summary_calls=count+1
                 generated = await provider.complete(messages)
             except DomainError:
                 raise DomainError(502, "MEMORY_SUMMARY_FAILED", "历史摘要生成失败，原始历史已保留，请重试") from None

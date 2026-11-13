@@ -1,0 +1,364 @@
+@tailwind base;
+@tailwind utilities;
+
+/* Presentation only. Tailwind preflight is disabled in tailwind.config.cjs. */
+:root {
+  color-scheme: light;
+  --brand: #28745a;
+  --brand-hover: #1e5e48;
+  --heading: #203b30;
+  --body: #4d6558;
+  --muted: #73867b;
+  --border: rgba(40,116,90,0.18);
+  @apply bg-console-canvas text-console-body;
+}
+body, .shell { @apply bg-console-canvas text-console-body; }
+.shell main { @apply text-console-body; }
+.shell main :is(h1,h2,h3), .shell .brand { @apply text-console-heading; }
+.shell main h1 { @apply font-bold tracking-tight; }
+.shell main .page-header { @apply mb-10; }
+.shell main .page-header p { @apply mt-3 text-sm leading-7 text-console-muted; }
+.shell main :is(.eyebrow,.muted,.saved-state,time), .shell .sidebar-label,
+.shell .sidebar-note, .shell .sidebar-note p { @apply text-console-muted; }
+.shell main .eyebrow { @apply text-xs font-semibold tracking-widest; }
+.shell main .section-heading { @apply mt-8 mb-5; }
+.shell main .section-heading h2 { @apply font-semibold; }
+.shell main a { @apply text-console-link; }
+.shell main a:hover { @apply underline underline-offset-4; }
+.shell .sidebar { @apply bg-console-surface border-console-primary/[0.16]; }
+.shell .brand:hover { @apply no-underline; }
+.shell .brand-icon { @apply bg-console-primary text-white; }
+.shell .status-dot { @apply bg-console-link; }
+.shell .sidebar nav a { @apply relative text-console-muted rounded-[10px] transition-colors duration-150; }
+.shell .sidebar nav a span { @apply text-console-muted; }
+.shell .sidebar nav a:hover { @apply bg-console-primary/[0.08] text-console-body no-underline; }
+.shell .sidebar nav a.active { @apply bg-console-primary/[0.15] text-console-link font-semibold; }
+.shell .sidebar nav a.active span { @apply text-console-link; }
+.shell .sidebar nav a.active::before {
+  content: '';
+  @apply absolute left-0 top-1/4 h-1/2 w-[2px] rounded-full bg-console-primary;
+}
+.shell main .panel {
+  @apply bg-console-surface border border-solid border-console-primary/[0.16] rounded-[14px] shadow-panel;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.shell main .panel:hover { @apply border-console-primary/30 shadow-panel-hover; }
+.shell main .kb-card { @apply p-6; }
+.shell main .kb-card:focus-within { @apply border-console-primary/30; }
+.shell main .kb-card h3 { @apply text-lg font-bold leading-7; }
+.shell main .kb-card .description { @apply text-[13px] leading-6 text-console-muted; }
+.shell main .kb-card > a { @apply text-sm font-medium; }
+.shell main .card-footer { @apply border-console-primary/20; }
+.shell main .card-footer time { @apply text-xs text-console-muted; }
+.shell main .folder-icon { @apply bg-console-primary/[0.08] border-console-primary/[0.16] text-console-link rounded-[10px]; }
+.shell main .count { @apply bg-console-primary/[0.12] text-console-muted rounded-md; }
+.shell main .empty { @apply py-14 text-console-muted; }
+.shell main .empty h3 { @apply font-semibold text-console-heading; }
+.shell main .empty p { @apply text-sm leading-7; }
+.shell main .welcome { @apply bg-console-surface; }
+.shell main .welcome h2 { @apply font-semibold tracking-tight; }
+.shell main .welcome p { @apply text-console-muted leading-7; }
+.shell main .welcome-art div { @apply bg-console-canvas/40 border-console-primary/[0.16] text-console-body rounded-[10px]; }
+.shell main .welcome-art span { @apply text-console-muted; }
+.shell main button, .shell main .button {
+  @apply bg-console-primary text-white rounded-[10px] font-semibold;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.shell main button:hover, .shell main .button:hover { @apply bg-console-hover text-white no-underline; }
+.shell main button:disabled { @apply opacity-50 cursor-not-allowed; }
+.shell main button:disabled:hover { @apply bg-console-primary; }
+.shell main .secondary { @apply bg-transparent text-console-body border border-solid border-console-muted/30; }
+.shell main .secondary:hover { @apply bg-white/[0.05] text-console-heading border-console-muted/50; }
+.shell main .secondary:disabled:hover { @apply bg-transparent border-console-muted/30; }
+.shell main .text-button { @apply bg-transparent text-console-link font-medium; }
+.shell main .text-button:hover { @apply bg-white/[0.05] text-console-link; }
+.shell main .text-button:disabled:hover { @apply bg-transparent; }
+.shell main .kb-card .card-actions .text-button:not(.danger-text) { @apply text-console-link; }
+.shell main .danger { @apply bg-console-danger text-white; }
+.shell main .danger:hover { @apply bg-[#a43e3a] text-white; }
+.shell main .danger:disabled:hover { @apply bg-console-danger; }
+.shell main .danger-text { @apply text-console-danger; }
+.shell main .danger-text:hover { @apply bg-console-danger/10 text-console-danger; }
+.shell main input:not([type='checkbox']):not([type='radio']), .shell main select, .shell main textarea {
+  @apply bg-console-surface text-console-heading border border-solid border-console-primary/[0.22] rounded-[10px] px-3 py-2.5 max-w-full;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.shell main input::placeholder, .shell main textarea::placeholder { @apply text-console-muted; }
+.shell main select option { @apply bg-console-surface text-console-heading; }
+.shell main input:not([type='checkbox']):not([type='radio']):focus, .shell main select:focus, .shell main textarea:focus {
+  @apply border-console-primary ring-[3px] ring-console-primary/20 outline-none;
+}
+.shell :is(button,a,input,select,textarea):focus-visible { @apply outline outline-2 outline-console-primary outline-offset-4; }
+.shell main :is(input,select,textarea):disabled { @apply opacity-50 cursor-not-allowed; }
+.shell main input:is([type='checkbox'],[type='radio']) { accent-color: #28745a; }
+.shell main :is(.editor label,.history-controls label,.preference-row label) { @apply text-sm font-medium text-console-body; }
+.shell main .history-controls { @apply gap-4; }
+.shell main .history-filters { @apply my-6; }
+.shell main .history-item { @apply p-6; }
+.shell main .history-item h2 { @apply font-semibold; }
+.shell main .preference-row { @apply py-5 mb-5 border-console-primary/20 gap-5; }
+.shell main .preference-row label { @apply gap-3; }
+.shell main .preference-row span { @apply text-xs text-console-muted; }
+.shell main .comparison-note { @apply text-console-muted leading-7; }
+.shell main .comparison-result { @apply p-6; }
+.shell main .comparison-result > p { @apply text-sm text-console-muted; }
+.shell main .comparison-result li { @apply text-console-body; }
+.shell main .comparison-result li > p { @apply text-xs text-console-muted; }
+.shell main .comparison-result details summary { @apply text-sm text-console-link cursor-pointer; }
+.shell main .comparison-result .source-content { @apply bg-console-canvas/60 rounded-[10px] p-4 text-console-body text-sm leading-7; }
+.shell main .delete-confirm, .shell main [role='dialog'].panel { @apply bg-console-surface border-console-primary/[0.16] rounded-[14px] p-7 shadow-panel; }
+.shell main .delete-confirm p { @apply text-console-body leading-7; }
+.shell main .delete-confirm .actions { @apply mt-7 gap-3; }
+.shell main .required { @apply text-console-danger; }
+.shell main .error { @apply bg-console-danger/10 text-[#a43e3a] border-console-danger/25 rounded-[10px]; }
+.shell main .delete-confirm .error { @apply text-[#a43e3a]; }
+.shell main .notice { @apply bg-console-primary/10 text-console-link rounded-[10px]; }
+@media (max-width:640px) {
+  .shell main .page-header { @apply mb-7; }
+  .shell main :is(.kb-card,.history-panel,.comparison-result,.delete-confirm) { @apply p-5; }
+  .shell main .preference-row { @apply gap-3; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .shell main *, .shell .sidebar nav a { transition: none; }
+}
+
+
+/* Sage canvas, forest navigation and tactile controls. */
+.shell .sidebar {
+  background: #173e30;
+  border-color: rgba(255,255,255,0.06);
+  box-shadow: 4px 0 24px rgba(23,62,48,0.06);
+}
+.shell .sidebar .brand { color: #f1f7f2; }
+.shell .sidebar .brand-icon {
+  background: #2f7158;
+  border: 1px solid rgba(210,236,219,0.16);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.12);
+  color: #f6fbf7;
+}
+.shell .sidebar-label { color: #98b7a5; }
+.shell .sidebar-note, .shell .sidebar-note p { color: #a9c3b4; }
+.shell .sidebar .status-dot { background: #a8d3b8; }
+.shell .sidebar nav a, .shell .sidebar nav a span { color: #bdd0c3; }
+.shell .sidebar nav a:hover { background: rgba(255,255,255,0.06); color: #edf7ef; }
+.shell .sidebar nav a.active { background: rgba(193,225,203,0.13); color: #f1f8f2; }
+.shell .sidebar nav a.active span { color: #d1ead8; }
+.shell .sidebar nav a.active::before { background: #a1d4b2; }
+
+.shell main .panel { border-color: #dce7de; }
+.shell main .panel:hover { border-color: #b8d1c1; }
+.shell main .welcome { background: #e5efe5; }
+.shell main .welcome-art div { background: rgba(255,255,255,0.72); border-color: #d1e0d4; }
+.shell main .folder-icon { background: #edf5ee; border-color: #d7e6da; }
+.shell main .count { background: #e4eee5; }
+
+.shell main button, .shell main .button {
+  @apply min-h-[42px] px-5 py-2.5 rounded-xl text-sm font-semibold;
+  border: 1px solid #23664e;
+  box-shadow: 0 2px 5px rgba(27,66,46,0.12), inset 0 1px 0 rgba(255,255,255,0.14);
+  letter-spacing: 0.01em;
+  transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.shell main button:hover, .shell main .button:hover {
+  border-color: #1b533f;
+  box-shadow: 0 3px 8px rgba(27,66,46,0.16), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.shell main button:active:not(:disabled), .shell main .button:active {
+  box-shadow: inset 0 2px 4px rgba(17,49,34,0.15);
+}
+.shell main button:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+}
+.shell main .secondary {
+  background: #fff;
+  color: #496352;
+  border-color: #cddcd2;
+  box-shadow: 0 1px 3px rgba(27,66,46,0.04), inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.shell main .secondary:hover { background: #f1f7f2; border-color: #a9c7b3; color: #245c43; }
+.shell main .secondary:disabled:hover { background: #fff; border-color: #cddcd2; box-shadow: none; }
+.shell main .text-button {
+  @apply min-h-[32px] rounded-lg px-3 py-1.5 text-xs;
+  background: #f1f7f2;
+  color: #286c53;
+  border: 1px solid #d9e7dc;
+  box-shadow: 0 1px 2px rgba(27,66,46,0.03);
+}
+.shell main .text-button:hover { background: #e5f0e7; border-color: #b6d1bf; color: #20563f; }
+.shell main .text-button:disabled:hover { background: #f1f7f2; border-color: #d9e7dc; box-shadow: none; }
+.shell main .danger { background: #bd504b; border-color: #ad4641; color: #fff; }
+.shell main .danger:hover { background: #a43e3a; border-color: #983934; }
+.shell main .danger:disabled:hover { background: #bd504b; border-color: #ad4641; box-shadow: none; }
+.shell main .danger-text { background: #fcf3f1; color: #ac4c44; border-color: #efd9d5; }
+.shell main .danger-text:hover { background: #f8e7e3; color: #993f39; border-color: #dfb6af; }
+.shell main .kb-card > a {
+  @apply inline-flex items-center min-h-[32px] rounded-lg px-2.5 py-1.5 text-xs;
+  background: #f0f6f1;
+  border: 1px solid #dce8df;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+.shell main .kb-card > a:hover { background: #e6f0e8; border-color: #bad1c1; text-decoration: none; }
+.shell main input:not([type='checkbox']):not([type='radio']), .shell main select, .shell main textarea {
+  background: #fbfdfb;
+  border-color: #cfdfd3;
+  box-shadow: inset 0 1px 2px rgba(27,66,46,0.035);
+  border-radius: 10px;
+}
+.shell main input:not([type='checkbox']):not([type='radio']):focus, .shell main select:focus, .shell main textarea:focus {
+  @apply border-console-primary ring-[3px] ring-console-primary/[0.12];
+}
+.shell main input[type='file']::file-selector-button {
+  font: inherit;
+  font-weight: 600;
+  color: #286c53;
+  background: #edf5ee;
+  border: 1px solid #ccdfd1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-right: 14px;
+  cursor: pointer;
+}
+.shell main input[type='file']::file-selector-button:hover { background: #e1eee4; }
+.shell main .delete-confirm, .shell main [role='dialog'].panel {
+  background: #fff;
+  border-color: #d6e3da;
+  box-shadow: 0 8px 28px rgba(27,66,46,0.09);
+}
+.shell main .question, .shell main .exchange-actions, .shell main .citation-card { border-color: #dce7de; }
+.shell main .citation-content, .shell main .chunk-panel pre { background: #eef5ef; }
+.shell main .document-status { background: #e9f1eb; color: #57715e; }
+.shell main .document-status.failed { background: #faece8; color: #a43e3a; }
+@media (max-width:640px) {
+  .shell main button, .shell main .button { @apply px-4; }
+  .shell main .text-button { @apply px-3; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .shell main *, .shell .sidebar nav a { transition: none; }
+}
+
+
+/* Refined control typography and consistent form rhythm. */
+.shell main :is(button, .button, input, select, textarea) {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.shell main button, .shell main .button {
+  min-height: 44px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(23,62,48,0.1), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.shell main .secondary {
+  font-weight: 500;
+  color: #355a46;
+  border-color: #d2e0d6;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(23,62,48,0.035);
+}
+.shell main .secondary:hover {
+  border-color: #a8c5b2;
+  background: #f1f7f3;
+  box-shadow: 0 2px 5px rgba(23,62,48,0.06);
+}
+.shell main button:disabled, .shell main button:disabled:hover {
+  opacity: 1;
+  color: #6f8c7b;
+  background: #e7eee9;
+  border-color: #dbe5de;
+  box-shadow: none;
+}
+.shell main .secondary:disabled, .shell main .secondary:disabled:hover {
+  color: #98a79d;
+  background: #f7faf8;
+  border-color: #e1e9e4;
+  box-shadow: none;
+}
+.shell main .text-button {
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.shell main .danger-text { color: #ac4c44; }
+.shell main .danger:disabled { background: #f3e4e1; color: #b08982; border-color: #ead6d1; }
+.shell main .history-controls { align-items: flex-end; gap: 20px; }
+.shell main .history-controls label, .shell main .preference-row label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.035em;
+  color: #6e8275;
+  gap: 9px;
+}
+.shell main input:not([type='checkbox']):not([type='radio']),
+.shell main select, .shell main textarea {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #2c4939;
+  padding: 11px 14px;
+  border-color: #d6e3da;
+  background-color: #fcfefc;
+  border-radius: 10px;
+  box-shadow: inset 0 1px 2px rgba(23,62,48,0.025), 0 1px 0 rgba(255,255,255,0.8);
+}
+.shell main input:not([type='checkbox']):not([type='radio']), .shell main select { min-height: 44px; }
+.shell main input:not([type='checkbox']):not([type='radio']):hover:not(:disabled),
+.shell main select:hover:not(:disabled), .shell main textarea:hover:not(:disabled) { border-color: #b4ccbd; }
+.shell main input:not([type='checkbox']):not([type='radio']):focus,
+.shell main select:focus, .shell main textarea:focus {
+  @apply border-console-primary ring-[3px] ring-console-primary/[0.10];
+  background-color: #fff;
+}
+.shell main select {
+  appearance: none;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23607e6b' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
+  background-position: right 14px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+.shell main select option { font-weight: 400; }
+.shell main form.history-controls { padding: 26px; gap: 20px; }
+.shell main form.history-controls label:first-child { flex: 1 1 240px; }
+.shell main form.history-controls label:nth-child(2) { flex: 0 1 200px; }
+.shell main form.history-controls label:nth-child(3) { flex: 0 1 170px; }
+.shell main form.history-controls > button { min-width: 112px; }
+.shell main form.history-controls > a {
+  font-size: 13px;
+  line-height: 20px;
+  padding: 12px 0;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.shell main .history-filters {
+  padding: 18px 20px;
+  border: 1px solid #dce7de;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.55);
+  gap: 16px;
+}
+.shell main .history-filters label { min-width: 172px; }
+.shell main .history-filters > button { margin-left: auto; }
+.shell main .preference-row select { min-width: 180px; }
+@media (max-width:640px) {
+  .shell main form.history-controls { padding: 20px; gap: 16px; }
+  .shell main form.history-controls label:first-child,
+  .shell main form.history-controls label:nth-child(2),
+  .shell main form.history-controls label:nth-child(3) { flex: 1 1 100%; }
+  .shell main form.history-controls > button { width: 100%; }
+  .shell main .history-filters { padding: 18px; }
+  .shell main .history-filters > button { margin-left: 0; width: 100%; }
+  .shell main .preference-row select { min-width: 0; }
+}

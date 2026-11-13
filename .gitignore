@@ -76,6 +76,9 @@ playwright/.cache/
 playwright/.auth/
 ms-playwright/
 *.tsbuildinfo
+# Local scratch directories with restrictive ACLs; never release as source.
+backend/pytest-cache-files-*/
+backend/backend-notused/
 
 # Runtime vector stores and database sidecars (retain files locally).
 vectors/

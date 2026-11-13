@@ -1,4 +1,5 @@
 import type { ChatEvent, ChatRequest, ChatResponse } from '../types/chat'
+import { apiErrorMessage } from './knowledgeBases'
 
 const base = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
 
@@ -8,7 +9,7 @@ async function request(body: ChatRequest, streaming: boolean, signal: AbortSigna
   })
   if (!response.ok) {
     const error = await response.json().catch(() => null)
-    throw new Error(error?.message || `请求失败（${response.status}），请重试`)
+    throw new Error(apiErrorMessage(error,`请求失败（${response.status}），请重试`))
   }
   return response
 }

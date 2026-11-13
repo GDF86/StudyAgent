@@ -213,9 +213,10 @@ def test_upstream_errors_sanitized(rig,status,code):
 
 
 @pytest.mark.parametrize('bad', [{}, {'choices':[]}, {'choices':[{'message':{'tool_calls':[]},'finish_reason':'length'}]}, turn([call('calculator',{},'same'),call('calculator',{},'same')])])
-def test_malformed_protocol(rig,bad):
+def test_malformed_or_truncated_protocol(rig,bad):
     install(rig,[bad])
-    assert run(rig).json()['code']=='LLM_INVALID_TOOL_RESPONSE'
+    expected='LLM_OUTPUT_LIMIT' if bad.get('choices') and bad['choices'][0].get('finish_reason')=='length' else 'LLM_INVALID_TOOL_RESPONSE'
+    assert run(rig).json()['code']==expected
 
 
 def test_provider_timeout(rig):

@@ -46,8 +46,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.conversation_memory = ConversationMemoryService(settings, app.state.conversations, app.state.preferences)
         app.state.execution = ConversationExecutionService(settings, app.state.conversations, app.state.conversation_memory)
         app.state.execution.recover()
-        app.state.chat = ChatService(settings, Retriever(settings, app.state.documents), CompatibleLLMProvider(settings))
-        app.state.agent = AgentService(settings, engine, app.state.documents, app.state.chat.retriever, app.state.chat.provider)
+        app.state.chat = ChatService(settings, Retriever(settings, app.state.documents), CompatibleLLMProvider(settings),app.state.preferences)
+        app.state.agent = AgentService(settings, engine, app.state.documents, app.state.chat.retriever, app.state.chat.provider,app.state.preferences)
         with Session(engine) as session:
             app.state.documents.recover(session)
         try:
@@ -56,12 +56,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             engine.dispose()
 
     app = FastAPI(title="StudyAgent Phase 7", lifespan=lifespan)
+    if settings.web_demo_enabled:
+        from app.core.web_demo import WebDemoMiddleware
+        app.add_middleware(WebDemoMiddleware, settings=settings)
     app.state.engine = engine
     app.state.settings = settings
-    app.add_middleware(UploadLimitMiddleware, limit=settings.max_upload_bytes)
+    app.add_middleware(UploadLimitMiddleware, limit=settings.max_upload_bytes+(65536 if settings.web_demo_enabled else 0))
     app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins,
                        allow_credentials=False, allow_methods=["GET", "POST", "PUT", "DELETE"],
-                       allow_headers=["Content-Type"])
+                       allow_headers=["Content-Type","X-Confirm-Delete","X-Confirm-Retry"])
+
+    @app.get('/api/runtime-capabilities')
+    def runtime_capabilities():
+        return {'local_real_mode':settings.web_demo_enabled,'document_writes':settings.web_demo_allow_writes if settings.web_demo_enabled else True,
+                'document_api_version':2,
+                'max_upload_bytes':settings.max_upload_bytes,'max_chunks':settings.max_chunks,'embedding_batch_size':settings.embedding_batch_size}
 
     @app.exception_handler(DomainError)
     async def domain_error(request: Request, exc: DomainError):

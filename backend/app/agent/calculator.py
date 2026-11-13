@@ -10,7 +10,8 @@ OPS = {ast.Add: operator.add, ast.Sub: operator.sub, ast.Mult: operator.mul,
 
 def calculate(expression: str) -> float | int:
     try:
-        tree = ast.parse(expression, mode="eval")
+        expression=expression.translate(str.maketrans({"（":"(","）":")","×":"*","÷":"/","−":"-"}))
+        tree = ast.parse(expression.strip(), mode="eval")
         if len(list(ast.walk(tree))) > 64:
             raise ValueError()
 

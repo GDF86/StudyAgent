@@ -1,5 +1,7 @@
 # GitHub 发布前安全检查
 
+> 本文是Phase 1–7历史审查，不代表当前发布状态。最新结果与Git边界风险见 [Phase 9审查](phase9-release-review.md)。
+
 检查日期：2026-10-18。范围：StudyAgent Phase 1–7 当前文件；只调整发布文档和 Git 忽略规则。
 
 ## 结论与发布前提

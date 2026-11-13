@@ -20,7 +20,24 @@ def clean_text(text: str) -> str:
     """Normalize line endings and controls while retaining paragraphs and Markdown."""
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", "", text)
-    return "\n".join(line.rstrip() for line in text.split("\n")).strip()
+    text=text.replace('\u200b','').replace('\ufeff','').replace('\xa0',' ')
+    return re.sub(r'\n[ \t]*\n(?:[ \t]*\n)+','\n\n',"\n".join(line.rstrip() for line in text.split("\n"))).strip()
+
+def docx_table_text(table,depth=0):
+    if depth>8:raise DomainError(413,'TABLE_NESTING_LIMIT','表格嵌套超过8层，请简化表格结构')
+    seen=set();rows=[]
+    for row in table.rows:
+        cells=[]
+        for cell in row.cells:
+            if cell._tc in seen:continue
+            seen.add(cell._tc)
+            pieces=[]
+            for item in cell.iter_inner_content():
+                value=docx_table_text(item,depth+1) if isinstance(item,Table) else item.text
+                if value.strip():pieces.append(value.strip())
+            if pieces:cells.append('\n'.join(pieces))
+        if cells:rows.append('\t'.join(cells))
+    return '\n'.join(rows)
 
 
 def parse_document(path: Path, suffix: str, max_chars: int) -> list[TextPage]:
@@ -33,7 +50,7 @@ def parse_document(path: Path, suffix: str, max_chars: int) -> list[TextPage]:
         text = clean_text(text)
         total += len(text)
         if total > max_chars:
-            raise DomainError(413, "TEXT_TOO_LARGE", "解析文本超过限制，请拆分文档")
+            raise DomainError(413, "TEXT_TOO_LARGE", f"已解析至少{total}字符，超过上限{max_chars}，已停止提取；请精简内容或按章节分卷。Embedding未调用。")
         if text:
             pages.append(TextPage(text, page))
 
@@ -52,11 +69,15 @@ def parse_document(path: Path, suffix: str, max_chars: int) -> list[TextPage]:
             parts = []
             docx_chars = 0
             for block in doc.iter_inner_content():
-                text = "\n".join("\t".join(cell.text for cell in row.cells) for row in block.rows) if isinstance(block, Table) else block.text
+                text = clean_text(docx_table_text(block) if isinstance(block,Table) else block.text)
+                if not text:continue
+                if not isinstance(block,Table):
+                    heading=re.fullmatch(r'(?:Heading|标题)\s*(\d+)',block.style.name or '',re.I)
+                    if heading:text='#'*min(int(heading[1]),6)+' '+text
                 parts.append(text)
                 docx_chars += len(text)
                 if docx_chars > max_chars:
-                    raise DomainError(413, "TEXT_TOO_LARGE", "解析文本超过限制，请拆分文档")
+                    raise DomainError(413, "TEXT_TOO_LARGE", f"已解析至少{docx_chars}字符，超过上限{max_chars}，已停止提取；请精简内容或按章节分卷。Embedding未调用。")
             add("\n".join(parts))
         else:
             data = path.read_bytes()

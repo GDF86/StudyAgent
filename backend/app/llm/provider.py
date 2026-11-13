@@ -13,6 +13,7 @@ import certifi
 from app.llm.tool_protocol import AssistantTurn
 from app.core.config import Settings
 from app.core.errors import DomainError
+from app.core.live_test import GuardAsync, controlled_payload
 
 log = logging.getLogger("uvicorn.error")
 Messages = list[dict[str, str]]
@@ -57,8 +58,8 @@ class CompatibleLLMProvider:
         return url + "/chat/completions", headers, not local
 
     def _payload(self, messages: Messages, stream: bool):
-        return {"model": self.settings.llm_model, "messages": messages, "stream": stream,
-                "temperature": self.settings.llm_temperature, "max_tokens": self.settings.llm_max_tokens}
+        return controlled_payload({"model": self.settings.llm_model, "messages": messages, "stream": stream,
+                "temperature": self.settings.llm_temperature, "max_tokens": self.settings.llm_max_tokens})
 
     @staticmethod
     def _check_status(response):
@@ -69,6 +70,11 @@ class CompatibleLLMProvider:
 
     @staticmethod
     def _check_finish(reason):
+        if reason=='length':
+            from app.core.live_test import CURRENT
+            scope=CURRENT.get()
+            if scope:scope.output_limited=True
+            raise DomainError(502,'LLM_OUTPUT_LIMIT','回答达到输出Token上限，未完整完成；本次调用仍计费。请缩小问题或选择简洁风格后主动重新提问，不会自动重试。')
         if reason is not None and reason != "stop":
             raise DomainError(502, "LLM_INCOMPLETE_RESPONSE", "模型未完整返回回答，请缩短问题或调整输出长度后重试")
 
@@ -77,7 +83,7 @@ class CompatibleLLMProvider:
         log.info("llm_request stream=false")
         try:
             async with asyncio.timeout(self.settings.llm_timeout_seconds):
-                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=self.transport, trust_env=trust_env, verify=self._verification(trust_env)) as client:
+                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=GuardAsync(self.settings, "llm", self.transport), trust_env=False, follow_redirects=False, verify=self._verification(trust_env)) as client:
                     response = await client.post(url, headers=headers, json=self._payload(messages, False))
                     self._check_status(response)
                     choice = response.json()["choices"][0]
@@ -99,13 +105,13 @@ class CompatibleLLMProvider:
         log.info("llm_request stream=true")
         try:
             async with asyncio.timeout(self.settings.llm_timeout_seconds):
-                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=self.transport, trust_env=trust_env, verify=self._verification(trust_env)) as client:
+                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=GuardAsync(self.settings, "llm", self.transport), trust_env=False, follow_redirects=False, verify=self._verification(trust_env)) as client:
                     async with client.stream("POST", url, headers=headers, json=self._payload(messages, True)) as response:
                         self._check_status(response)
                         if "text/event-stream" not in response.headers.get("content-type", ""):
                             raise ValueError("not SSE")
                         data_lines: list[str] = []
-                        count, finished, terminal = 0, False, False
+                        count, finished, terminal,limited = 0, False, False,False
                         async for line in response.aiter_lines():
                             if line.startswith("data:"):
                                 data_lines.append(line[5:].lstrip(" "))
@@ -123,7 +129,9 @@ class CompatibleLLMProvider:
                                 if choices == []:
                                     continue  # Optional usage event.
                                 choice = choices[0]
-                                self._check_finish(choice.get("finish_reason"))
+                                if choice.get('finish_reason')=='length':
+                                    limited=True  # Drain the same response's trailing usage; never issue another request.
+                                else:self._check_finish(choice.get("finish_reason"))
                                 finished = finished or choice.get("finish_reason") == "stop"
                                 token = choice["delta"].get("content")
                                 if token is not None:
@@ -136,6 +144,7 @@ class CompatibleLLMProvider:
                                         yield token
                         if not count or not (terminal or finished) or data_lines:
                             raise ValueError("truncated SSE")
+                        if limited:self._check_finish('length')
                         log.info("llm_response stream=true chars=%s", count)
         except DomainError:
             raise
@@ -151,10 +160,11 @@ class CompatibleLLMProvider:
         payload.update(tools=tools, tool_choice="auto")
         try:
             async with asyncio.timeout(self.settings.llm_timeout_seconds):
-                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=self.transport, trust_env=trust_env, verify=self._verification(trust_env)) as client:
+                async with httpx.AsyncClient(timeout=self.settings.llm_timeout_seconds, transport=GuardAsync(self.settings, "llm", self.transport), trust_env=False, follow_redirects=False, verify=self._verification(trust_env)) as client:
                     response = await client.post(url, headers=headers, json=payload)
                     self._check_status(response)
                     choice = response.json()["choices"][0]
+                    if choice.get('finish_reason')=='length':self._check_finish('length')
                     turn = AssistantTurn.model_validate(choice["message"])
                     reason = choice.get("finish_reason")
                     if turn.tool_calls:

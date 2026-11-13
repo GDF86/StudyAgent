@@ -18,6 +18,10 @@ async def compare(body: CompareRequest, request: Request, session: Database):
     runs = []
     for mode in ("basic", "reranked"):
         start = perf_counter()
+        cfg=request.app.state.settings
+        if mode=='reranked' and (cfg.web_demo_enabled or not cfg.reranker_base_url or not cfg.reranker_model):
+            runs.append(CompareRun(mode=mode,error_code='RERANKER_NOT_ENABLED' if cfg.web_demo_enabled else 'RERANKER_NOT_CONFIGURED',error_message='真实Reranker未启用或未获费用授权；仅展示实际Basic检索，不执行重排或额外向量化',elapsed_ms=0))
+            continue
         try:
             result = await run_in_threadpool(service.retriever.retrieve, session, body.knowledge_base_id,
                                             body.question, body.top_k, rerank=mode == "reranked")

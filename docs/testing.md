@@ -1,5 +1,7 @@
 # Phase 1 测试记录与验收步骤
 
+> 当前统一回归：从根目录使用 `backend/.venv/Scripts/python.exe backend/tests/run_offline_safety.py tests -q -p no:cacheprovider`，不要把下文历史 `pytest`/完整 E2E 命令作为当前默认入口。标准入口禁用 dotenv 并阻断真实模型 HTTP；当前代理测试依赖其本地 Mock 注册。前端当前零付费命令为在 frontend 下 `npm run build`、`npx playwright test --config playwright.offline.config.ts`。下文涉及 CRUD 的历史 E2E 需要专用隔离后端，禁止对生产数据库执行。最新完整结果见[稳定性检查 (private operational report omitted)](release-candidate-audit.md)。
+
 本文件保留 Phase 1 的历史验收记录。当前 Phase 2 结果见 [Phase 2 测试报告](phase2-testing.md)。
 
 ## 真实执行状态
