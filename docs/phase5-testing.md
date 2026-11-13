@@ -1,6 +1,6 @@
 # Phase 5 恢复开发与测试报告
 
-日期：2026-10-15（Asia/Shanghai）。项目：D:/desktop/code/StudyAgent/outputs/StudyAgent。
+日期：2026-10-15（Asia/Shanghai）。项目：StudyAgent（历史验证工作区）。
 
 ## 恢复时实际状态
 

@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
 from app.agent.calculator import calculate
 from app.core.errors import DomainError
+from app.core.live_test import require_tool
 from app.database.models import Chunk, Document, KnowledgeBase
 from app.rag.prompts import build_messages, validate_citation_markers
 from app.schemas.chat import Citation
@@ -47,10 +48,10 @@ class Calculator(Arguments):
 
 REGISTRY = {
     "search_documents": (Search, "检索当前知识库的相关原文和引用。"),
-    "summarize_document": (Summarize, "依据当前知识库指定文档的全部分片生成有引用的总结；过长文档明确拒绝。"),
+    "summarize_document": (Summarize, "按顺序有界分段总结当前知识库指定文档，返回真实引用与覆盖状态；超过资源上限明确失败。"),
     "compare_documents": (Compare, "依据当前知识库的 2 至 4 篇不同文档生成有引用的比较。"),
     "generate_quiz": (Quiz, "检索当前知识库并生成附答案、解释和引用的选择题、简答题或判断题。"),
-    "calculator": (Calculator, "计算基础数学表达式，支持 + - * / % ** 和括号。"),
+    "calculator": (Calculator, "计算基础数学表达式，支持 + - * / % ** 和括号。返回 expression/value 普通计算结果，不提供文档 Chunk 或来源引用；纯计算回答不得添加 [1] 等文档引用。"),
 }
 
 
@@ -86,7 +87,7 @@ class ToolContext:
             return {"documents": [{"document_id": d.id, "name": d.filename} for d in docs[:100]],
                     "inventory_truncated": len(docs) > 100}
 
-    def sources(self, ids):
+    def sources(self, ids, enforce_limit=True):
         with self.documents.lock, Session(self.engine) as session:
             result = []
             for doc_id in ids:
@@ -99,7 +100,7 @@ class ToolContext:
                     raise DomainError(409, "DOCUMENT_UNAVAILABLE", "文档没有可用分片")
                 result.extend(Citation(id=0, knowledge_base_id=self.kb_id, document_id=doc.id,
                     document_name=doc.filename, page=c.page, chunk_id=c.id, content=c.content, score=1.0) for c in chunks)
-            self.check_size(result)
+            if enforce_limit:self.check_size(result)
             return result
 
     def search(self, query, top_k):
@@ -123,6 +124,7 @@ class ToolContext:
         return result
 
     async def execute(self, name, raw):
+        require_tool(name)
         if name not in REGISTRY:
             raise DomainError(422, "UNKNOWN_TOOL", "请求的工具不存在")
         try:
@@ -130,8 +132,13 @@ class ToolContext:
         except (ValidationError, ValueError):
             raise DomainError(422, "INVALID_TOOL_ARGUMENTS", "工具参数不符合定义，请按工具 JSON Schema 修正") from None
         if name == "calculator":
-            return {"expression": args.expression, "value": calculate(args.expression)}
-        if name in {"search_documents", "generate_quiz"}:
+            return {"result_kind": "calculation", "expression": args.expression, "value": calculate(args.expression)}
+        if name=="summarize_document":
+            sources=await run_in_threadpool(self.sources,[args.document_id],False)
+            if len(json.dumps([s.model_dump() for s in sources],ensure_ascii=False).encode())>8500:
+                from app.agent.long_summary import summarize
+                return await summarize(self,sources)
+        elif name in {"search_documents", "generate_quiz"}:
             sources = await run_in_threadpool(self.search, args.query if name == "search_documents" else args.topic,
                                              args.top_k if name == "search_documents" else self.settings.top_k)
         else:

@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     max_chunks: int = Field(default=5000, ge=1)
     chunk_size: int = Field(default=800, ge=1)
     chunk_overlap: int = Field(default=150, ge=0)
+    paragraph_aware_chunks: bool = False
+    chunk_max_utf8_bytes: int | None = Field(default=None, ge=4)
     embedding_api_key: SecretStr = SecretStr("")
     embedding_base_url: str = ""
     embedding_model: str = ""
@@ -50,6 +52,17 @@ class Settings(BaseSettings):
     conversation_max_prompt_chars: int = Field(default=100000, ge=4000, le=500000)
     conversation_max_prompt_tokens: int = Field(default=64000, ge=4000, le=200000)
     conversation_timeout_seconds: float = Field(default=180, gt=0, le=600)
+    # Empty by default. SecretStr keeps optional proxy credentials out of repr/logs.
+    model_http_proxy: SecretStr = SecretStr("")
+    # Opt-in test mode is inert without an explicitly authorized sealed ledger and stage scope.
+    live_test_mode: bool = False
+    web_demo_enabled: bool = False
+    web_demo_allow_writes: bool = False
+    web_demo_allow_session_management: bool = False
+    personal_learning: bool = False
+    personal_alert_thresholds: list[int] = [30,50]
+    web_demo_round_id: str = ""
+    live_test_ledger: Path = BACKEND_DIR / "test-results" / "bailian-first-live" / "budget.sqlite"
     model_config = SettingsConfigDict(env_file=BACKEND_DIR / ".env", extra="ignore")
 
     @model_validator(mode="after")

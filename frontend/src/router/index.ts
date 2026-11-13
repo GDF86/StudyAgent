@@ -5,6 +5,11 @@ import DocumentsView from '../views/DocumentsView.vue'
 import HistoryView from '../views/HistoryView.vue'
 import ConversationView from '../views/ConversationView.vue'
 
+import ChatView from '../views/ChatView.vue'
+import AgentView from '../views/AgentView.vue'
+import ComparisonView from '../views/ComparisonView.vue'
+import PreferencesView from '../views/PreferencesView.vue'
+
 export default createRouter({
   history: createWebHistory(),
   routes: [
@@ -13,10 +18,10 @@ export default createRouter({
     { path: '/knowledge-bases/:id', component: DocumentsView },
     { path: '/history', component: HistoryView },
     { path: '/conversations/:id', component: ConversationView },
-    { path: '/knowledge-bases/:id/chat', redirect: to => `/knowledge-bases/${to.params.id}` },
-    { path: '/knowledge-bases/:id/agent', redirect: to => `/knowledge-bases/${to.params.id}` },
-    { path: '/comparison', redirect: '/knowledge-bases' },
-    { path: '/preferences', redirect: '/knowledge-bases' },
+    { path: '/knowledge-bases/:id/chat', component: ChatView },
+    { path: '/knowledge-bases/:id/agent', component: AgentView },
+    { path: '/comparison', component: ComparisonView },
+    { path: '/preferences', component: PreferencesView },
     { path: '/:pathMatch(.*)*', redirect: '/' },
   ],
 })

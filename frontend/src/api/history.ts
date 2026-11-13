@@ -1,4 +1,5 @@
 import type { Citation } from '../types/chat'
+import {apiErrorMessage} from './knowledgeBases'
 export type ConversationMode = 'chat' | 'agent'
 export interface Conversation { id: string; knowledge_base_id: number; title: string; mode: ConversationMode; created_at: string; updated_at: string; summary: string; summary_through_turn: number }
 export interface HistoryMessage { id: string; conversation_id: string; role: 'user' | 'assistant'; content: string; turn_no: number; attempt_no: number; request_id: string | null; status: 'pending' | 'completed' | 'failed' | 'cancelled' | 'interrupted'; citations: Citation[]; error_code: string | null }
@@ -7,8 +8,8 @@ export interface Preferences { answer_style: 'concise' | 'detailed'; learning_go
 export interface PreferenceState { preferences: Preferences; defaults: Preferences; overrides: Partial<Preferences> }
 const base = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
 async function request<T>(path: string, method = 'GET', data?: unknown, signal?: AbortSignal): Promise<T> {
-  const response = await fetch(base + path, { method, headers: { 'Content-Type': 'application/json' }, body: data === undefined ? undefined : JSON.stringify(data), signal })
-  if (!response.ok) { const error = await response.json().catch(() => null); throw new Error(error?.message || `请求失败（${response.status}）`) }
+  const response = await fetch(base + path, { method, headers: { 'Content-Type': 'application/json',...(method==='DELETE'?{'X-Confirm-Delete':'true'}:{}) }, body: data === undefined ? undefined : JSON.stringify(data), signal })
+  if (!response.ok) { const error = await response.json().catch(() => null); throw new Error(apiErrorMessage(error,`请求失败（${response.status}）`)) }
   return response.status === 204 ? undefined as T : response.json()
 }
 export const historyApi = {

@@ -7,6 +7,7 @@ import httpx
 
 from app.core.config import Settings
 from app.core.errors import DomainError
+from app.core.live_test import GuardSync
 
 
 class EmbeddingProvider(Protocol):
@@ -35,7 +36,7 @@ class CompatibleEmbeddingProvider:
         except ValueError:
             local = hostname.lower() == "localhost"
         try:
-            with httpx.Client(timeout=config.embedding_timeout_seconds, transport=self.transport, follow_redirects=False, trust_env=not local) as client:
+            with httpx.Client(timeout=config.embedding_timeout_seconds, transport=GuardSync(self.settings, "embedding", self.transport), follow_redirects=False, trust_env=False) as client:
                 for start in range(0, len(texts), config.embedding_batch_size):
                     batch = texts[start:start + config.embedding_batch_size]
                     response = client.post(url + "/embeddings", headers=headers, json={"model": config.embedding_model, "input": batch, "encoding_format": "float"})

@@ -14,7 +14,7 @@ Message 状态为 pending/completed/failed/cancelled/interrupted；原始问答�
 
 主要新增错误：CONVERSATION_BUSY、CONVERSATION_MODE_MISMATCH、REQUEST_ID_CONFLICT、REGENERATION_NOT_LATEST、REGENERATION_INPUT_MISMATCH（409）；MEMORY_CONTEXT_TOO_LARGE、MEMORY_TURN_TOO_LARGE（413）；MEMORY_SUMMARY_FAILED（502）；CONVERSATION_TIMEOUT（504）。SSE 建立后通过 error 事件报告错误。
 
-# StudyAgent API（Phase 1–3）
+# StudyAgent API（Phase 1–3，历史基础契约）
 
 开发地址：`http://127.0.0.1:8000`。请求和正常数据响应使用 JSON。交互文档为 `/docs`。
 
@@ -378,3 +378,24 @@ question 非空且最多 4000 字符，top_k 为 1–20，禁止额外字段。�
 | RERANKER_TIMEOUT / RERANKER_FAILED / RERANKER_INVALID_RESPONSE | 502 |
 
 对比接口将这些错误放入对应 run；不会返回供应商错误正文、请求密钥或私有调试信息。
+
+## 当前本机能力、预览与模型管理接口
+
+以下为 2026-11-12 对照代码补充的契约；前文 Phase 1–5 保留历史分层说明，后续扩展以本节及对应阶段文档为准。
+
+| 方法 | 路径 | 作用与边界 |
+| --- | --- | --- |
+| GET | /api/runtime-capabilities | 返回 local_real_mode、document_writes、document_api_version=2、max_upload_bytes、max_chunks、embedding_batch_size，不返回凭据 |
+| POST | /api/knowledge-bases/{id}/documents/preview | multipart file；只做本地解析与分片计划，不索引、不调用 Embedding |
+| GET | /api/documents/{uuid}/processing-plan | 对已有文件生成本地计划；缺少源文件返回 SOURCE_MISSING |
+| POST | /api/documents/{uuid}/retry | 仅 failed 文档，要求 X-Confirm-Retry:true；成功索引可能产生真实模型调用，受 Guard 约束 |
+| GET | /api/local-mode-status | 仅启用 WebDemoMiddleware 时存在；状态、策略版本、价格确认与额度摘要，无模型请求 |
+| POST | /api/local-model-session/reauthorize | 仅启用本机管理权限、合法 Origin/Host、非忙碌状态下人工核价；不能恢复 HALTED |
+
+本机真实模式的预览、计划、写操作仍要求相应写权限及匹配的 Origin。模型管理两个接口由 ASGI 中间件直接处理，不在标准 OpenAPI 路由表内；其余新增接口可在 /docs 中查看。
+
+核价 JSON 字段：confirmed=true、session_version（当前实际 run ID）、region=beijing、input_tier=<=128K，以及 llm_input_per_million、llm_output_per_million、embedding_input_per_million（三项为人工核对后的每百万 Token 人民币单价）。核价不调用模型；格式错误返回 400，管理权限/来源拒绝返回 403，HALTED 等状态阻断返回 409/MODEL_REAUTHORIZATION_BLOCKED。当前事故状态不能通过此接口重签授权。
+
+预览计划包含 parsed_chars、planned_chunks、embedding_requests、max_attempts_with_retry、estimated_reserve_yuan、worst_reserve_with_retry_yuan、embedding_called。无法确认价格时金额可以为空；计划不是模型请求或实际扣款。
+
+Calculator 成功结果包含 result_kind=calculation、expression、value，不提供文档 Chunk。无来源编号仍报 LLM_INVALID_CITATION；文档工具继续严格校验实际来源。长文 summarize_document 的分组/覆盖/失败语义见 [P1 修复](agent-p1-fixes.md)；最新验收边界见[稳定性检查 (private operational report omitted)](release-candidate-audit.md)。

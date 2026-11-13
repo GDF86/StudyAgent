@@ -80,6 +80,7 @@ async function generate(target: Exchange) {
   const signal = controller.signal
   function finish(response: ChatResponse) {
     if (response.knowledge_base_id !== kbId) throw new Error('回答知识库不匹配，已停止显示')
+    if (!Array.isArray(response.citations) || response.citations.some(c => c.knowledge_base_id !== kbId)) throw new Error('引用知识库不匹配，已停止显示')
     target.answer = response.answer
     target.citations = response.citations
     target.state = 'complete'

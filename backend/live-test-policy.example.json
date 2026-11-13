@@ -1,0 +1,27 @@
+{
+  "offline_only": true,
+  "authorized": false,
+  "models": {
+    "llm": "qwen-flash",
+    "embedding": "text-embedding-v4"
+  },
+  "max_requests": 7,
+  "manual_budget_yuan": 5,
+  "reference_rates_nanoyuan_per_token": {
+    "input_rate": 150,
+    "output_rate": 1500,
+    "embedding_rate": 500
+  },
+  "input_tier_max_tokens": 128000,
+  "max_output_tokens": 512,
+  "console_evidence": "",
+  "token_bound_attested": false,
+  "valid_until": 0,
+  "note": "Reference rates only. Not an account-level billing cap. This file does not authorize or initialize a live run.",
+  "project_budget_yuan": 50,
+  "live_input_ceiling_tokens": {
+    "llm": 1000000,
+    "embedding": 8192
+  },
+  "live_reserve_highest_tier": true
+}

@@ -7,6 +7,7 @@ import httpx
 
 from app.core.config import Settings
 from app.core.errors import DomainError
+from app.core.live_test import GuardSync
 from app.schemas.chat import Citation
 
 
@@ -33,7 +34,7 @@ class Reranker:
         if config.reranker_api_key.get_secret_value():
             headers["Authorization"] = "Bearer " + config.reranker_api_key.get_secret_value()
         try:
-            with httpx.Client(timeout=config.reranker_timeout_seconds, transport=self.transport, follow_redirects=False, trust_env=not local) as client:
+            with httpx.Client(timeout=config.reranker_timeout_seconds, transport=GuardSync(self.settings, "reranker", self.transport), follow_redirects=False, trust_env=False) as client:
                 response = client.post(url + "/rerank", headers=headers, json={
                     "model": config.reranker_model, "query": question,
                     "documents": [c.content for c in candidates], "top_n": len(candidates)})

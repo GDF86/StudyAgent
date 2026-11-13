@@ -6,7 +6,7 @@ const busy = ref(false), loading = ref(true), error = ref(''), notice = ref('')
 async function load() { state.value = await preferencesApi.get(); form.value = { ...state.value.preferences } }
 async function save() {
   busy.value = true; error.value = ''; notice.value = ''
-  try { for (const key of ['answer_style', 'learning_goal', 'preferred_language'] as const) await preferencesApi.set(key, form.value[key]); await load(); notice.value = '偏好已保存，将用于后续历史会话请求。' }
+  try { for (const key of ['answer_style', 'learning_goal', 'preferred_language'] as const) await preferencesApi.set(key, form.value[key]); await load(); notice.value = '偏好已保存，将用于下一次问答或Agent请求（全局生效）。' }
   catch (cause) { error.value = describeError(cause); await load().catch(() => undefined) }
   finally { busy.value = false }
 }
@@ -25,6 +25,6 @@ onMounted(async () => { try { await load() } catch (cause) { error.value = descr
     <div class="preference-row"><label>回答风格<select v-model="form.answer_style" :disabled="busy"><option value="concise">简洁</option><option value="detailed">详细</option></select></label><span>{{ state.overrides.answer_style === undefined ? '使用默认值' : '已主动设置' }}</span><button type="button" class="secondary" :disabled="busy" @click="reset('answer_style')">恢复默认风格</button></div>
     <div class="preference-row"><label>学习目标<select v-model="form.learning_goal" :disabled="busy"><option value="general">通用学习</option><option value="exam">考试复习</option><option value="research">研究学习</option></select></label><span>{{ state.overrides.learning_goal === undefined ? '使用默认值' : '已主动设置' }}</span><button type="button" class="secondary" :disabled="busy" @click="reset('learning_goal')">恢复默认目标</button></div>
     <div class="preference-row"><label>回答语言<select v-model="form.preferred_language" :disabled="busy"><option value="zh-CN">中文</option><option value="en">English</option></select></label><span>{{ state.overrides.preferred_language === undefined ? '使用默认值' : '已主动设置' }}</span><button type="button" class="secondary" :disabled="busy" @click="reset('preferred_language')">恢复默认语言</button></div>
-    <button :disabled="busy">保存偏好</button><p class="muted">偏好只影响表达方式，不能改变资料范围、工具权限或引用规则。临时问答保留原有行为。</p>
+    <button :disabled="busy">保存偏好</button><p class="muted">偏好对本机所有知识库和会话全局生效，下一次提问立即读取；只影响表达，不改变资料范围、工具权限或引用规则。保存偏好不调用模型，长历史自动摘要会调用模型并计入累计预算。</p>
   </form>
 </template>
